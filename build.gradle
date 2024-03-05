@@ -36,9 +36,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-java {
-	sourceCompatibility = '17'
-}
 
 configurations {
 	compileOnly {

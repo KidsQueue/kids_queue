@@ -1,20 +1,27 @@
 package com.kidsqueue.kidsqueue.dto.auth;
 
+import com.kidsqueue.kidsqueue.domain.Parent.Parent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import java.com.kidsqueue.kidsqueue.domain.Parent.Parent;
+
 @Data
 public class SignupDto {
 
     @NotBlank
-    private String login_id;
+    private String loginId;
     @NotBlank
     private String password;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String phoneNumber;
 
     public Parent toEntity() {
         return Parent.builder()
-                .login_id(login_id)
-                .password(password)
-                .build();
+            .loginId(loginId)
+            .password(password)
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .build();
     }
 }
