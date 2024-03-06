@@ -24,16 +24,21 @@ public class Parent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 32)
     private String loginId;
-
     @Column(nullable = false)
     private String password;
+    @Column(unique = true, length = 16)
     private String nickname;
+    @Column(length = 5)
     private String name;
+    @Column(length = 3)
     private String age;
+    @Column(length = 1)
     private String gender;
+    @Column(length = 13)
     private String phoneNumber;
+    @Column(length = 13)
     private String residentRegistrationNumber;
     private String profileImageUrl;
 
