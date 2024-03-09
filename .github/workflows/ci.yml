@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
 
@@ -39,15 +39,26 @@ jobs:
 
       # Spring Boot Build & test
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
-      - name: 단위 테스트, 통합 테스트
+      # application-prod 설정으로 프로젝트 실행
+      - name: Run with Prod Profile
+        run: ./gradlew bootRun --args='--spring.profiles.active=prod'
+
+      - name: Test with Gradle
         run: ./gradlew test
+
+      # Test 후 Report 생성
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: '**/build/test-results/test/TEST-*.xml'
 
 
   dependency-submission:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
 
