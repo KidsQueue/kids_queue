@@ -8,10 +8,24 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-22.04
+
     permissions:
       contents: read
+
+    services:
+      mysql:
+        image: mysql:8.0.36
+        env:
+          MYSQL_ROOT_PASSWORD: root1234!!
+          MYSQL_DATABASE: kids_queue
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u yourusername --password=yourpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5  
 
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +35,8 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      # GitHub secrets에서 DB 설정 값 가져와서 셋팅
+      # Todo 추후 수정 예정 (배포에서 안 쓴다면 삭제)
       - name: Set application-prod.yml
         uses: microsoft/variable-substitution@v1
         with:
@@ -43,6 +59,7 @@ jobs:
 
       - name: Test with Gradle
         run: ./gradlew test
+
 
   dependency-submission:
 
