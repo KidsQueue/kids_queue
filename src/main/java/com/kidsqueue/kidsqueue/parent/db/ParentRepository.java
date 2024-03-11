@@ -1,4 +1,4 @@
-package com.kidsqueue.kidsqueue.domain.Parent;
+package com.kidsqueue.kidsqueue.parent.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
-package com.kidsqueue.kidsqueue.dto.auth;
+package com.kidsqueue.kidsqueue.parent.model;
 
-import com.kidsqueue.kidsqueue.domain.Parent.Parent;
+import com.kidsqueue.kidsqueue.parent.db.Parent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
