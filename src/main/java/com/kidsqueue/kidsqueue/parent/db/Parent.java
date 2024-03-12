@@ -1,4 +1,4 @@
-package com.kidsqueue.kidsqueue.domain.Parent;
+package com.kidsqueue.kidsqueue.parent.db;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

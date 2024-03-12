@@ -25,5 +25,3 @@ spring:
     user:
       name: test
       password: 1234
-
-
