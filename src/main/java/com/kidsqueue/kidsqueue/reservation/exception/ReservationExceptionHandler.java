@@ -11,14 +11,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 @Slf4j
 @RestControllerAdvice(basePackages = "com.kidsqueue.kidsqueue.reservation")
 public class ReservationExceptionHandler {
+
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public ApiResponse validationException(
         MethodArgumentNotValidException exception
-    ){
-        log.error("",exception);
+    ) {
+        log.error("", exception);
         List<String> errorList = exception.getFieldErrors().stream()
             .map(it -> {
                 String format = "%s : { %s } 은 %ㄴ";
@@ -38,9 +40,10 @@ public class ReservationExceptionHandler {
             .build();
         return response;
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String duplicate(IllegalStateException e){
+    public String duplicate(IllegalStateException e) {
         return e.getMessage();
     }
 }

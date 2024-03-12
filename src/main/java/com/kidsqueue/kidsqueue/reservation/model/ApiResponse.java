@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.integration.IntegrationProperties.
 @Builder
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ApiResponse<T> {
+
     private String resultCode;
     private String resulMessage;
     private T data;
@@ -25,7 +26,8 @@ public class ApiResponse<T> {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Error{
+    public static class Error {
+
         private List<String> errorList;
     }
 

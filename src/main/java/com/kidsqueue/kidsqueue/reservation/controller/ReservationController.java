@@ -20,17 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user/{userId}/reservation")
 @RequiredArgsConstructor
 public class ReservationController {
+
     private final ReservationService reservationService;
 
     @PostMapping("")
-    public ApiResponse<String>createReservation(
+    public ApiResponse<String> createReservation(
         @PathVariable long userId,
         @Valid @RequestBody ReservationDTO reservationDTO
-    ){
+    ) {
         /*
           userId, jwt  인증
         */
-        Reservation reservation = reservationService.saveReservation(userId,reservationDTO);
+        Reservation reservation = reservationService.saveReservation(userId, reservationDTO);
         ApiResponse<String> response = ApiResponse.<String>builder()
             .resultCode(String.valueOf(HttpStatus.OK.value()))
             .resulMessage(HttpStatus.OK.getReasonPhrase())

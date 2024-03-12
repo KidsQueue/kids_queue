@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReservationDTO {
+
     @NotBlank
     private Long hospitalId;
     @NotBlank
