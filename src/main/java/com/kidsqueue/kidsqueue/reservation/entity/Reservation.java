@@ -1,7 +1,8 @@
 package com.kidsqueue.kidsqueue.reservation.entity;
 
 
-import com.kidsqueue.kidsqueue.domain.Parent.Parent;
+import com.kidsqueue.kidsqueue.hospital.db.Hospital;
+import com.kidsqueue.kidsqueue.parent.db.Parent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +29,7 @@ public class Reservation {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    private Parent Parent;
+    private Parent parent;
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;

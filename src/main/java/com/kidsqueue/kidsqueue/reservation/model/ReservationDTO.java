@@ -2,9 +2,6 @@ package com.kidsqueue.kidsqueue.reservation.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kidsqueue.kidsqueue.domain.Parent.Parent;
-import com.kidsqueue.kidsqueue.reservation.entity.Child;
-import com.kidsqueue.kidsqueue.reservation.entity.Hospital;
 import jakarta.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
