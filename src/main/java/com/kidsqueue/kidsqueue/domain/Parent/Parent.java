@@ -22,7 +22,7 @@ public class Parent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true, length = 32)
     private String loginId;
