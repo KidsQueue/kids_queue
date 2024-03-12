@@ -20,7 +20,7 @@ public class HospitalService {
 
     public ApiResponse<List<HospitalDto>> findAll(Pageable pageable) {
 
-        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAll(pageable)
+        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAllByIsActive(1, pageable)
                 .map(hospitalConverter::toDto);
 
         List<HospitalDto> hospitalDtoList = hospitalDtoPage.toList();
@@ -41,5 +41,4 @@ public class HospitalService {
         return apiResponse;
 
     }
-
 }
