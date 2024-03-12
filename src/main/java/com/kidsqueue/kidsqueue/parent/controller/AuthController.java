@@ -1,9 +1,9 @@
-package com.kidsqueue.kidsqueue.Controller;
+package com.kidsqueue.kidsqueue.parent.controller;
 
 
-import com.kidsqueue.kidsqueue.Service.AuthService;
-import com.kidsqueue.kidsqueue.domain.Parent.Parent;
-import com.kidsqueue.kidsqueue.dto.auth.SignupDto;
+import com.kidsqueue.kidsqueue.parent.service.AuthService;
+import com.kidsqueue.kidsqueue.parent.db.Parent;
+import com.kidsqueue.kidsqueue.parent.model.SignupDto;
 import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
