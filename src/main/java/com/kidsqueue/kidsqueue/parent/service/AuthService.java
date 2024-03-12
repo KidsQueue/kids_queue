@@ -1,7 +1,7 @@
-package com.kidsqueue.kidsqueue.Service;
+package com.kidsqueue.kidsqueue.parent.service;
 
-import com.kidsqueue.kidsqueue.domain.Parent.Parent;
-import com.kidsqueue.kidsqueue.domain.Parent.ParentRepository;
+import com.kidsqueue.kidsqueue.parent.db.Parent;
+import com.kidsqueue.kidsqueue.parent.db.ParentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

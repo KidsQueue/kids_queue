@@ -24,7 +24,7 @@ public class SecurityConfig {
         throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new MvcRequestMatcher(introspector, "/auth/**"))
+                .requestMatchers(new MvcRequestMatcher(introspector, "/**"))
                 .permitAll() // 이 주소는 모두에게 허용
                 .anyRequest().authenticated()) // 그 외 나머지 주소는 인증된 사용자에게만 허용
             .formLogin((formLogin) -> formLogin
