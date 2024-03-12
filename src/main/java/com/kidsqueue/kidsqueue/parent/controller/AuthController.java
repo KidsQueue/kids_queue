@@ -1,9 +1,10 @@
 package com.kidsqueue.kidsqueue.parent.controller;
 
 
-import com.kidsqueue.kidsqueue.parent.service.AuthService;
+import com.kidsqueue.kidsqueue.common.ApiResponse;
 import com.kidsqueue.kidsqueue.parent.db.Parent;
 import com.kidsqueue.kidsqueue.parent.model.SignupDto;
+import com.kidsqueue.kidsqueue.parent.service.AuthService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,21 +27,35 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid SignupDto signupDto,
-        BindingResult bindingResult) { // @Valid 를 통해 유효성 검사를 시행하고, 그 결과를 bindingResult에 담아 성공 여부 확인
+    public ResponseEntity<ApiResponse<String>> signup(@Valid SignupDto signupDto,
+        BindingResult bindingResult) {
+        ApiResponse<String> response;
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
 
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("유효성 검사 실패: " + errorMap.toString());
+
+            response = ApiResponse.<String>builder()
+                .status(ApiResponse.FAIL_STATUS)
+                .message("유효성 검사 실패")
+                .data(errorMap.toString())
+                .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } else {
             Parent parent = signupDto.toEntity();
             Parent parentEntity = authService.signUp(parent);
 
-            return ResponseEntity.ok("회원가입 성공");
+            response = ApiResponse.<String>builder()
+                .status(ApiResponse.SUCCESS_STATUS)
+                .message("회원가입 성공")
+                .data("ID: " + parentEntity.getId())
+                .build();
+
+            return ResponseEntity.ok(response);
         }
     }
 }
