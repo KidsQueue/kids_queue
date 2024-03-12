@@ -9,14 +9,14 @@ public class ReviewConverter {
     public ReviewDto toDto(Review review) {
         return ReviewDto.builder()
             .id(review.getId())
-            .parentId(review.getParentId())
-            .hospitalId(review.getHospitalId())
             .title(review.getTitle())
             .score(review.getScore())
             .description(review.getDescription())
             .createdBy(review.getCreatedBy())
             .updatedBy(review.getUpdatedBy())
             .isActive(review.getIsActive())
+            .hospitalId(review.getId())
+            .parentId(review.getId())
             .build();
     }
 }
