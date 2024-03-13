@@ -1,5 +1,6 @@
 package com.kidsqueue.kidsqueue.reservation.entity;
 
+import com.kidsqueue.kidsqueue.hospital.db.Hospital;
 import com.kidsqueue.kidsqueue.reservation.repository.ReservationRepository;
 import com.kidsqueue.kidsqueue.reservation.service.ReservationService;
 import java.sql.Timestamp;
