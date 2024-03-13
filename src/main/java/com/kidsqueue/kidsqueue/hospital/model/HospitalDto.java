@@ -1,6 +1,7 @@
 package com.kidsqueue.kidsqueue.hospital.model;
 
 import com.kidsqueue.kidsqueue.doctor.db.Doctor;
+import com.kidsqueue.kidsqueue.hospital.db.ClinicHour;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.List;
 public class HospitalDto {
     private Long id;
     private String name;
-    private String adress;
+    private String address;
     private String description;
     private String phoneNumber;
     private String status;
@@ -26,6 +27,5 @@ public class HospitalDto {
     private LocalDateTime updatedBy;
     private Integer isActive;
 
-    private List<Doctor> doctorList;
 
 }
