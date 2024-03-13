@@ -23,30 +23,59 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final HospitalConverter hospitalConverter;
 
+    public ApiResponse<List<HospitalDto>> findAllAsc(Pageable pageable) {
 
+        //  Page<Hospital> 을 Page<HospitalDto> 로 변환
+        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAllByIsActiveOrderByIdAsc(1, pageable)
+                .map(hospitalConverter::toDto);
 
-    public ApiResponse<List<HospitalDto>> findAll(Pageable pageable) {
+        //  Page<HospitalDto> 로 ApiResponse<List<HospitalDto>> 얻어와서 리턴
+        return getApiResponse(hospitalDtoPage);
 
-        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAll(pageable)
-            .map(hospitalConverter::toDto);
+    }
 
+    public ApiResponse<List<HospitalDto>> findAllDesc(Pageable pageable) {
+
+        //  Page<Hospital> 을 Page<HospitalDto> 로 변환
+        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAllByIsActiveOrderByIdDesc(1, pageable)
+                .map(hospitalConverter::toDto);
+
+        //  Page<HospitalDto> 로 ApiResponse<List<HospitalDto>> 얻어와서 리턴
+        return getApiResponse(hospitalDtoPage);
+
+    }
+
+    public ApiResponse<List<HospitalDto>> findAllByName(String name, Pageable pageable) {
+
+        //  Page<Hospital> 을 Page<HospitalDto> 로 변환
+        Page<HospitalDto> hospitalDtoPage = hospitalRepository.findAllByIsActiveAndNameNative(1, name, pageable)
+                .map(hospitalConverter::toDto);
+
+        //  Page<HospitalDto> 로 ApiResponse<List<HospitalDto>> 얻어와서 리턴
+        return getApiResponse(hospitalDtoPage);
+
+    }
+
+    //  Page<HospitalDto> 로 ApiResponse<List<HospitalDto>> 만드는 메서드
+    private static ApiResponse<List<HospitalDto>> getApiResponse(Page<HospitalDto> hospitalDtoPage) {
+
+        //  Page<HospitalDto> 에서 List<HospitalDto> 가져오기
         List<HospitalDto> hospitalDtoList = hospitalDtoPage.toList();
 
+        //  Page<HospitalDto> 로 Pagination 생성
         Pagination pagination = Pagination.builder()
-            .page(hospitalDtoPage.getNumber())
-            .size(hospitalDtoPage.getSize())
-            .currentElements(hospitalDtoPage.getNumberOfElements())
-            .totalElements(hospitalDtoPage.getTotalElements())
-            .totalPage(hospitalDtoPage.getTotalPages())
-            .build();
+                .page(hospitalDtoPage.getNumber())
+                .size(hospitalDtoPage.getSize())
+                .currentElements(hospitalDtoPage.getNumberOfElements())
+                .totalElements(hospitalDtoPage.getTotalElements())
+                .totalPage(hospitalDtoPage.getTotalPages())
+                .build();
 
-        ApiResponse<List<HospitalDto>> apiResponse = ApiResponse.<List<HospitalDto>>builder()
-            .data(hospitalDtoList)
-            .pagination(pagination)
-            .build();
-
-        return apiResponse;
-
+        //  ApiResponse<List<HospitalDto>> 만들어서 리턴
+        return  ApiResponse.<List<HospitalDto>>builder()
+                .data(hospitalDtoList)
+                .pagination(pagination)
+                .build();
     }
 
     public ApiResponse<HospitalDto> findHospitalById(Long id) {
