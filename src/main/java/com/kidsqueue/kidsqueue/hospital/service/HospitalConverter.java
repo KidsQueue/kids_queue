@@ -12,7 +12,7 @@ public class HospitalConverter {
         return HospitalDto.builder()
                 .id(hospital.getId())
                 .name(hospital.getName())
-                .adress(hospital.getAddress())
+                .address(hospital.getAddress())
                 .description(hospital.getDescription())
                 .phoneNumber(hospital.getPhoneNumber())
                 .status(hospital.getStatus())

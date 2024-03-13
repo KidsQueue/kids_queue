@@ -17,7 +17,7 @@ import java.util.List;
 public class HospitalDto {
     private Long id;
     private String name;
-    private String adress;
+    private String address;
     private String description;
     private String phoneNumber;
     private String status;
