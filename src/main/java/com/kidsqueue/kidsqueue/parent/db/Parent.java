@@ -42,6 +42,9 @@ public class Parent {
     private String residentRegistrationNumber;
     private String profileImageUrl;
 
+
+    private String role;
+
     private LocalDateTime createBy;
     private LocalDateTime updateBy;
 
