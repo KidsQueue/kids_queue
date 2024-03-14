@@ -47,20 +47,20 @@ public class ReservationExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse checkEarlierThanCurrentTime(IllegalArgumentException exception) {
+    public ApiResponse illegalArgumentException(IllegalArgumentException exception) {
         log.error("", exception);
         List<String> errorList = new ArrayList<>();
         errorList.add(String.valueOf(exception));
 
         return returnApiResponseThroughErrorList(errorList);
     }
-
-    @ExceptionHandler
+    @ExceptionHandler(value = {IllegalStateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResponse duplicate(IllegalStateException exception) {
+    public ApiResponse illegalStateException(IllegalStateException exception) {
         log.error("", exception);
         List<String> errorList = new ArrayList<>();
         errorList.add(String.valueOf(exception));
+
         return returnApiResponseThroughErrorList(errorList);
     }
 

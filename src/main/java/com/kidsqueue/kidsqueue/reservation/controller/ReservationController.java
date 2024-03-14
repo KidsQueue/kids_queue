@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("")
-    public ApiResponse<String> createReservation(
+    public ResponseEntity<ApiResponse<String>> createReservation(
         @PathVariable Long userId,
         @Valid @RequestBody ReservationDTO reservationDTO
     ) {
@@ -39,18 +40,19 @@ public class ReservationController {
             .resulMessage(HttpStatus.CREATED.getReasonPhrase())
             .data("예약성공")
             .build();
-        return response;
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
     @GetMapping("")
-    public ApiResponse<List<Reservation>> getReservationListOfParentId(@PathVariable Long userId){
+    public ResponseEntity<ApiResponse<List<Reservation>>> getReservationListOfParentId(@PathVariable Long userId){
         List<Reservation> reservationList = reservationService.findReservationListOfParentId(userId);
         ApiResponse<List<Reservation>> response = ApiResponse.<List<Reservation>>builder()
             .resultCode(String.valueOf(HttpStatus.OK.value()))
             .resulMessage(HttpStatus.OK.getReasonPhrase())
             .data(reservationList)
             .build();
-        return response;
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
+
 
 
 
