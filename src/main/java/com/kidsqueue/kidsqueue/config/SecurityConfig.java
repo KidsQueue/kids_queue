@@ -1,5 +1,6 @@
 package com.kidsqueue.kidsqueue.config;
 
+import com.kidsqueue.kidsqueue.parent.jwt.JWTFilter;
 import com.kidsqueue.kidsqueue.parent.jwt.JWTUtil;
 import com.kidsqueue.kidsqueue.parent.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,10 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http.authorizeHttpRequests(
             (auth) -> auth.requestMatchers("/**").permitAll().anyRequest().authenticated());
+
+        //LoginFilter 앞에 JWTFilter 추가
+        http
+            .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //LoginFilter 추가 (AuthenticationManager 메소드에 authenticationConfiguration, jwtUtil 객체를 넣어야 함)
         http.addFilterAt(
