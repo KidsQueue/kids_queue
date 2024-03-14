@@ -10,4 +10,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Reservation save(Reservation reservation);
     List<Reservation> findByParent_Id(Long parentId);
+    List<Reservation> findByChild_IdAndIsActive(Long childId, Boolean isActive);
 }
