@@ -1,5 +1,6 @@
 package com.kidsqueue.kidsqueue.config;
 
+import com.kidsqueue.kidsqueue.parent.jwt.JWTUtil;
 import com.kidsqueue.kidsqueue.parent.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +19,12 @@ public class SecurityConfig {
 
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion을 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
+        JWTUtil jwtUtil) {
         this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -55,8 +59,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
             (auth) -> auth.requestMatchers("/**").permitAll().anyRequest().authenticated());
 
-        //LoginFilter 추가 (AuthenticationManager 메소드에 authenticationConfiguration 객체를 넣어야 함)
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)),
+        //LoginFilter 추가 (AuthenticationManager 메소드에 authenticationConfiguration, jwtUtil 객체를 넣어야 함)
+        http.addFilterAt(
+            new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
             UsernamePasswordAuthenticationFilter.class);
 
         // 세션 stateless 상태로 설정
