@@ -6,9 +6,9 @@ spring:
       dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
-#  config:
-#    activate:
-#      on-profile: docker
+  #  config:
+  #    activate:
+  #      on-profile: docker
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${url}
