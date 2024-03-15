@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice(basePackages = "com.kidsqueue.kidsqueue.reservation")
 public class ReservationExceptionHandler {
-    public ApiResponse returnApiResponseThroughErrorList(List<String> errorList){
+
+    public ApiResponse returnApiResponseThroughErrorList(List<String> errorList) {
         Error error = Error
             .builder()
             .errorList(errorList)
             .build();
 
-        ApiResponse<Object> response = ApiResponse.builder()
+        ApiResponse response = ApiResponse.builder()
             .resultCode(String.valueOf(HttpStatus.BAD_REQUEST.value()))
             .resulMessage(HttpStatus.BAD_REQUEST.getReasonPhrase())
             .error(error)
@@ -37,7 +39,7 @@ public class ReservationExceptionHandler {
         log.error("", exception);
         List<String> errorList = exception.getFieldErrors().stream()
             .map(it -> {
-                String format = "%s : { %s } 은 %ㄴ";
+                String format = "%s : { %s } 은 %s";
                 String message = String.format(format, it.getField(), it.getRejectedValue(),
                     it.getDefaultMessage());
                 return message;
@@ -54,6 +56,7 @@ public class ReservationExceptionHandler {
 
         return returnApiResponseThroughErrorList(errorList);
     }
+
     @ExceptionHandler(value = {IllegalStateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse illegalStateException(IllegalStateException exception) {
@@ -64,7 +67,18 @@ public class ReservationExceptionHandler {
         return returnApiResponseThroughErrorList(errorList);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = {NotFoundException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse NotFoundException(NotFoundException exception) {
+        log.error("", exception);
+        List<String> errorList = new ArrayList<>();
+        errorList.add(String.valueOf(exception));
+
+        return returnApiResponseThroughErrorList(errorList);
+    }
+
+
+    @ExceptionHandler(value = {SQLIntegrityConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse errorSql(SQLIntegrityConstraintViolationException exception) {
         log.error("", exception);
@@ -72,7 +86,6 @@ public class ReservationExceptionHandler {
         errorList.add("SQLIntegrityConstraintViolationException 발생");
         return returnApiResponseThroughErrorList(errorList);
     }
-
 
 
 }

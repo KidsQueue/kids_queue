@@ -9,24 +9,18 @@ import com.kidsqueue.kidsqueue.reservation.model.ReservationDTO;
 import com.kidsqueue.kidsqueue.reservation.repository.ReservationRepository;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ReservationService {
 
-    @Autowired
-    ReservationRepository reservationRepository;
-    @Autowired
-    HospitalRepository hospitalRepository;
+    private final ReservationRepository reservationRepository;
+    private final HospitalRepository hospitalRepository;
 
     public Reservation saveReservation(Long userId, ReservationDTO reservationDTO) {
-        // ReservationDTO에서 Parent 객체를 불러오든 userId를 통해서 db에서 Parent 객체들 불러오든 해야함, 아니면 그냥 Id만 넣고 저장
         Parent parent = Parent.builder().id(userId).build();  //임시
         Hospital hospital = Hospital.builder().id(reservationDTO.getHospitalId()).build();
         Child child = Child.builder().id(reservationDTO.getChildId()).build();
@@ -35,7 +29,7 @@ public class ReservationService {
             .hospital(hospital)
             .child(child)
             .time(reservationDTO.getTime())
-            .is_active(true)
+            .isActive(true)
             .build();
         /*
             예외 : 1. 현재시간보다 이전의 예약은 예약 불가,
@@ -44,43 +38,76 @@ public class ReservationService {
         */
         checkEarlierThanCurrentTime(reservationDTO.getTime());
         checkTimeLikeTimeInDB(reservationDTO.getChildId(), reservation.getTime());
-        checkMaxNumOfPeople(reservationDTO.getHospitalId(),reservationDTO.getTime());
+        checkMaxNumOfPeople(reservationDTO.getHospitalId(), reservationDTO.getTime());
 
         return reservationRepository.save(reservation);
     }
-    public void checkEarlierThanCurrentTime(Timestamp reservationTime){
+
+    public void checkEarlierThanCurrentTime(Timestamp reservationTime) {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         if (reservationTime.before(currentTime)) {
             throw new IllegalArgumentException("예약은 현재 시간 이후로만 가능합니다.");
         }
     }
-    public void checkTimeLikeTimeInDB(Long childId, Timestamp time){
-        List<Reservation> reservations = reservationRepository.findByChildIdAndIsActive(childId, true);
 
+    public void checkTimeLikeTimeInDB(Long childId, Timestamp time) {
+        List<Reservation> reservations = reservationRepository.findByChildIdAndIsActive(childId,
+            true);
         for (Reservation reservation : reservations) {
             if (reservation.getTime().equals(time)) {
                 throw new IllegalStateException("해당 시간에 같은 예약이 있습니다.");
             }
         }
     }
-    public void checkMaxNumOfPeople(Long hospitalId, Timestamp time){
-        Hospital hospital = hospitalRepository.findById(hospitalId).get();
-        Integer maxNumOfPeople = hospital.getMaxNumOfPeople();
 
-        List<Reservation> reservations = reservationRepository.findByHospitalIdAndTime(hospitalId, time);
-        int numOfReservation = 0;
-        for (Reservation reservation : reservations) {
-            numOfReservation++;
-        }
-
-        if(maxNumOfPeople <= numOfReservation){
-            throw new IllegalStateException("해당 시간의 예약이 다찼습니다.");
-        }
-
+    public void checkMaxNumOfPeople(Long hospitalId, Timestamp time) {
+        hospitalRepository.findById(hospitalId)
+            .map(it -> {
+                Integer maxNumOfPeople = it.getMaxNumOfPeople();
+                List<Reservation> reservations = reservationRepository.findByHospitalIdAndTimeAndIsActive(
+                    hospitalId, time, true);
+                int numOfReservation = 0;
+                for (Reservation reservation : reservations) {
+                    numOfReservation++;
+                }
+                if (maxNumOfPeople <= numOfReservation) {
+                    throw new IllegalStateException("해당 시간의 예약이 다찼습니다.");
+                }
+                return it;
+            }).orElseThrow(
+                () -> {
+                    throw new NotFoundException("존재하지 않는 병원입니다");
+                }
+            );
     }
 
-    public List<Reservation> findReservationListOfParentId(Long parentId){
-        return reservationRepository.findByParentId(parentId);
+    public List<Reservation> findReservationListOfParent(Long parentId) {
+        return reservationRepository.findByParentIdAndIsActive(parentId, true);
+    }
+
+    public Reservation updateReservation(Long reservationId, ReservationDTO reservationDTO) {
+        return reservationRepository.findById(reservationId)
+            .map(it -> {
+                it.updateReservation(reservationDTO.getTime());
+                return reservationRepository.save(it);
+            }).orElseThrow(
+                () -> {
+                    throw new NotFoundException("존재하지 않는 예약입니다");
+                }
+            );
+    }
+
+    public void deleteReservation(Long reservationId) {
+        reservationRepository.findById(reservationId)
+            .map(it -> {
+                it.disabled();
+                reservationRepository.save(it);
+                return it;
+            }).orElseThrow(
+                () -> {
+                    throw new NotFoundException("존재하지 않는 예약입니다");
+                }
+            );
     }
 }

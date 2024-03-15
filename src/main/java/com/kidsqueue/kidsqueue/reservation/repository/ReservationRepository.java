@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    Reservation save(Reservation reservation);
-    List<Reservation> findByParentId(Long parentId);
+    List<Reservation> findByParentIdAndIsActive(Long parentId, Boolean isActive);
+
     List<Reservation> findByChildIdAndIsActive(Long childId, Boolean isActive);
-    List<Reservation> findByHospitalIdAndTime(Long hospitalId, Timestamp time);
+
+    List<Reservation> findByHospitalIdAndTimeAndIsActive(Long hospitalId, Timestamp time,
+        Boolean isActive);
 }

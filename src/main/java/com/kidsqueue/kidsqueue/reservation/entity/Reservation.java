@@ -9,13 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @AllArgsConstructor
@@ -37,20 +37,19 @@ public class Reservation {
     @JoinColumn(name = "child_id")
     private Child child;
     private Timestamp time;
+    @CreatedBy
     private Timestamp createBy;
+    @LastModifiedDate
     private Timestamp updatedBy;
-    private Boolean is_active;
+    private Boolean isActive;
 
-    @PrePersist
-    public void createDate() {
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        createBy = currentTimestamp;
-        updatedBy = currentTimestamp;
+
+    public void updateReservation(Timestamp time) {
+        this.time = time;
     }
 
-    @PreUpdate
-    public void updateDate() {
-        updatedBy = new Timestamp(System.currentTimeMillis());
+    public void disabled() {
+        isActive = false;
     }
 
 }
