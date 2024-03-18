@@ -2,6 +2,7 @@ package com.kidsqueue.kidsqueue.review.service;
 
 import com.kidsqueue.kidsqueue.review.db.Review;
 import com.kidsqueue.kidsqueue.review.model.ReviewDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,5 +19,11 @@ public class ReviewConverter {
             .hospitalId(review.getId())
             .parentId(review.getId())
             .build();
+    }
+
+    public Review toEntity(ReviewDto reviewDto) {
+        Review review = new Review();
+        BeanUtils.copyProperties(reviewDto, review);
+        return review;
     }
 }

@@ -12,12 +12,14 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "review")
-@AllArgsConstructor
 @Builder
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +28,10 @@ public class Review {
     @Column(columnDefinition = "tinyInt")
     private Integer score;
     private String description;
+
     private LocalDateTime createdBy;
     private LocalDateTime updatedBy;
-    private Boolean isActive;
+    private Integer isActive;
 
     @ManyToOne
     @JoinColumn(name = "hospital_id")

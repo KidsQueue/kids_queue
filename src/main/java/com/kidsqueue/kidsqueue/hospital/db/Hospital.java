@@ -41,7 +41,7 @@ public class Hospital {
     private List<Doctor> doctorList;
 
     @OneToMany(mappedBy = "hospital")
-    private List<ClinicHour> clinicHour;
+    private List<ClinicHour> clinicHour5;
 
     @PrePersist // DB에 INSERT 되기 직전에 실행
     public void createDate() {

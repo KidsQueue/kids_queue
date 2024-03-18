@@ -17,6 +17,5 @@ public class ReviewDto {
     private String description;
     private LocalDateTime createdBy;
     private LocalDateTime updatedBy;
-    private Boolean isActive;
-
+    private Integer isActive;
 }
