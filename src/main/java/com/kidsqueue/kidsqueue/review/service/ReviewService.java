@@ -44,7 +44,7 @@ public class ReviewService {
     private static ApiResponse<List<ReviewDto>> getApiResponse(Page<ReviewDto> reviewDtoPage) {
         List<ReviewDto> reviewDtoList = reviewDtoPage.toList();
 
-        // Page<ReviewDto> 로 Pagenation 생성
+        // Page<ReviewDto> 로 pagination 생성
         Pagination pagination = Pagination.builder()
             .page(reviewDtoPage.getNumber())
             .size(reviewDtoPage.getSize())
@@ -78,6 +78,18 @@ public class ReviewService {
         }
     }
 
+    public ApiResponse<ReviewDto> createReview(ReviewDto reviewDto) {
+        Review review = reviewConverter.toEntity(reviewDto);
+
+        Review savedReview = reviewRepository.save(review);
+
+        ReviewDto savedReviewDto = reviewConverter.toDto(savedReview);
+        return ApiResponse.<ReviewDto>builder()
+            .data(savedReviewDto)
+            .status(ApiResponse.SUCCESS_STATUS)
+            .message("리뷰 정보 생성 성공")
+            .build();
+    }
     public ApiResponse<ReviewDto> updateReview(Long id, ReviewDto reviewdto) {
         Optional<Review> reviewOptional = reviewRepository.findById(id);
 
@@ -122,4 +134,6 @@ public class ReviewService {
                 .build();
         }
     }
+
+
 }
