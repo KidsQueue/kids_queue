@@ -1,5 +1,6 @@
 package com.kidsqueue.kidsqueue.config;
 
+import com.kidsqueue.kidsqueue.parent.db.RefreshRepository;
 import com.kidsqueue.kidsqueue.parent.jwt.JWTFilter;
 import com.kidsqueue.kidsqueue.parent.jwt.JWTUtil;
 import com.kidsqueue.kidsqueue.parent.jwt.LoginFilter;
@@ -21,11 +22,13 @@ public class SecurityConfig {
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion을 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
-        JWTUtil jwtUtil) {
+        JWTUtil jwtUtil, RefreshRepository refreshRepository) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
     }
 
 
@@ -66,7 +69,8 @@ public class SecurityConfig {
 
         //LoginFilter 추가 (AuthenticationManager 메소드에 authenticationConfiguration, jwtUtil 객체를 넣어야 함)
         http.addFilterAt(
-            new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+            new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,
+                refreshRepository),
             UsernamePasswordAuthenticationFilter.class);
 
         // 세션 stateless 상태로 설정
