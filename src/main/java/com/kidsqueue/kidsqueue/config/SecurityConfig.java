@@ -1,6 +1,7 @@
 package com.kidsqueue.kidsqueue.config;
 
 import com.kidsqueue.kidsqueue.parent.db.RefreshRepository;
+import com.kidsqueue.kidsqueue.parent.jwt.CustomLogoutFilter;
 import com.kidsqueue.kidsqueue.parent.jwt.JWTFilter;
 import com.kidsqueue.kidsqueue.parent.jwt.JWTUtil;
 import com.kidsqueue.kidsqueue.parent.jwt.LoginFilter;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -72,6 +74,9 @@ public class SecurityConfig {
             new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,
                 refreshRepository),
             UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository),
+            LogoutFilter.class);
 
         // 세션 stateless 상태로 설정
         http.sessionManagement(
