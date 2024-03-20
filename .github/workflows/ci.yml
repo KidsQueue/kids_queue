@@ -41,7 +41,7 @@ jobs:
         with:
           files: ./src/main/resources/application.yml
         env:
-          jwt.secret: ${{secrets.JWT_KEY}}
+          spring.jwt.secret: ${{secrets.JWT_KEY}}
 
 
       # GitHub secrets에서 DB 설정 값 가져와서 셋팅
