@@ -1,6 +1,5 @@
 package com.kidsqueue.kidsqueue.parent.controller;
 
-
 import com.kidsqueue.kidsqueue.common.ApiResponse;
 import com.kidsqueue.kidsqueue.parent.db.Parent;
 import com.kidsqueue.kidsqueue.parent.model.SignupDto;
