@@ -2,11 +2,13 @@ package com.kidsqueue.kidsqueue.parent.jwt;
 
 import com.kidsqueue.kidsqueue.parent.db.Parent;
 import com.kidsqueue.kidsqueue.parent.model.PrincipalDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,48 +27,55 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
 
-        //request에서 Authorization 헤더 찾기
-        String authorization = request.getHeader("Authorization");
+        // 헤더에서 access키에 담긴 토큰을 꺼냄
+        String accessToken = request.getHeader("access");
 
-        //Authorization 헤더 검증
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-
-            System.out.println("token null");
+        // 토큰이 없다면 다음 필터로 넘김
+        if (accessToken == null) {
             filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        System.out.println("authorization now");
-        //Bearer 부분 제거 후 토큰만 분리해서
-        String token = authorization.split(" ")[1];
+        // 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
+        try {
+            jwtUtil.isExpired(accessToken);
+        } catch (ExpiredJwtException e) {
 
-        //토큰이 유효한지 검증 (소멸시간이 지났는지 안지났는지)
-        if (jwtUtil.isExpired(token)) {
+            //response body
+            PrintWriter writer = response.getWriter();
+            writer.print("access token expired");
 
-            System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
+            //response status code
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // 토큰으로부터 loginId, role을 뽑아내서 parent 객체에 담고, principalDetails에 넘겨줌
-        String loginId = jwtUtil.getLoginId(token);
-        String role = jwtUtil.getRole(token);
+        // 토큰이 access인지 확인 (발급시 payload에 명시)
+        String category = jwtUtil.getCategory(accessToken);
 
-        Parent parent = new Parent();
-        parent.setLoginId(loginId);
-        parent.setPassword("temppassword");
-        parent.setRole(role);
+        if (!category.equals("access")) {
 
-        PrincipalDetails principalDetails = new PrincipalDetails(parent);
+            //response body
+            PrintWriter writer = response.getWriter();
+            writer.print("invalid access token");
 
-        //스프링 시큐리티 인증 토큰 생성
+            //response status code
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        // username, role 값을 획득하여 principalDetails로 넘겨줌
+        String loginId = jwtUtil.getLoginId(accessToken);
+        String role = jwtUtil.getRole(accessToken);
+
+        Parent parentEntity = new Parent();
+        parentEntity.setLoginId(loginId);
+        parentEntity.setRole(role);
+        PrincipalDetails principalDetails = new PrincipalDetails(parentEntity);
+
+        // accessToken에서 뽑아낸 loginId, role을 토큰화(authToken)하여 세션(SecurityContextHolder)에 등록해줌.
         Authentication authToken = new UsernamePasswordAuthenticationToken(principalDetails, null,
             principalDetails.getAuthorities());
-        //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
