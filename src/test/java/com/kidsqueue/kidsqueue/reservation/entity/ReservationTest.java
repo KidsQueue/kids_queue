@@ -1,6 +1,7 @@
 package com.kidsqueue.kidsqueue.reservation.entity;
 
 import com.kidsqueue.kidsqueue.hospital.db.Hospital;
+import com.kidsqueue.kidsqueue.parent.db.Parent;
 import com.kidsqueue.kidsqueue.reservation.repository.ReservationRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -22,17 +23,18 @@ class ReservationTest {
         /*
     given
      */
-        LocalDateTime localDateTime = LocalDateTime.of(2022, 10, 1, 10, 30);
+        LocalDateTime localDateTime = LocalDateTime.of(2024, 8, 1, 10, 30);
         Timestamp timestamp = Timestamp.valueOf(localDateTime);
 
         Long userId = 1L;
-        Long hospitalId = 30L;
+        Parent parent = Parent.builder().id(userId).build();
+        Long hospitalId = 1L;
         Hospital hospital = Hospital.builder().id(hospitalId).build();
-        Long childId = 20L;
+        Long childId = 1L;
         Child child = Child.builder().id(childId).build();
 
         Reservation reservation = Reservation.builder()
-            .id(userId)
+            .parent(parent)
             .hospital(hospital)
             .child(child)
             .time(timestamp)

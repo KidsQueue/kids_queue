@@ -45,8 +45,19 @@ public class ReservationController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<ApiResponse<Reservation>> getReservation(@PathVariable Long reservationId){
+        Reservation reservation = reservationService.findReservation(reservationId);
+        ApiResponse<Reservation> response = ApiResponse.<Reservation>builder()
+            .resultCode(String.valueOf(HttpStatus.OK.value()))
+            .resulMessage(HttpStatus.OK.getReasonPhrase())
+            .data(reservation)
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("")
-    public ResponseEntity<ApiResponse<List<Reservation>>> getReservationListOfParentId(
+    public ResponseEntity<ApiResponse<List<Reservation>>> getReservationListOfParent(
         @PathVariable Long userId) {
         List<Reservation> reservationList = reservationService.findReservationListOfParent(userId);
         ApiResponse<List<Reservation>> response = ApiResponse.<List<Reservation>>builder()
@@ -61,7 +72,7 @@ public class ReservationController {
     public ResponseEntity<ApiResponse<Reservation>> updateReservation(
         @PathVariable Long userId,
         @PathVariable Long reservationId,
-        ReservationDTO reservationDTO) {
+        @Valid @RequestBody ReservationDTO reservationDTO) {
         Reservation reservation = reservationService.updateReservation(reservationId,
             reservationDTO);
         ApiResponse<Reservation> response = ApiResponse.<Reservation>builder()

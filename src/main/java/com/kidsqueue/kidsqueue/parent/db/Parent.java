@@ -42,17 +42,21 @@ public class Parent {
     private String residentRegistrationNumber;
     private String profileImageUrl;
 
-    private LocalDateTime createBy;
-    private LocalDateTime updateBy;
+//    private LocalDateTime createBy;
+//    private LocalDateTime updateBy;
+    private LocalDateTime createdBy;
+    private LocalDateTime updatedBy;
 
     @PrePersist // DB에 INSERT 되기 직전에 실행
     public void createDate() {
-        this.createBy = LocalDateTime.now();
+//        this.createBy = LocalDateTime.now();
+        this.createdBy = LocalDateTime.now();
     }
 
     @PreUpdate // DB에 UPDATE 되기 직전에 실행
     public void updateDate() {
-        this.updateBy = LocalDateTime.now();
+//        this.updateBy = LocalDateTime.now();
+        this.updatedBy = LocalDateTime.now();
     }
 }
 
