@@ -1,7 +1,9 @@
 package com.kidsqueue.kidsqueue.doctor.controller;
 
 import com.kidsqueue.kidsqueue.common.ApiResponse;
+import com.kidsqueue.kidsqueue.common.HospitalNotFoundException;
 import com.kidsqueue.kidsqueue.doctor.db.Doctor;
+import com.kidsqueue.kidsqueue.doctor.db.DoctorRepository;
 import com.kidsqueue.kidsqueue.doctor.model.DoctorRequestDto;
 import com.kidsqueue.kidsqueue.doctor.model.DoctorResponseDto;
 import com.kidsqueue.kidsqueue.doctor.service.DoctorService;
@@ -32,6 +34,7 @@ public class DoctorController {
 			.build();
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
+
 
 	@DeleteMapping("/{doctor_id}")
 	public ResponseEntity<ApiResponse<Void>> deleteDoctorById(
@@ -73,11 +76,12 @@ public class DoctorController {
 	}
 
 	@GetMapping
-	public ResponseEntity<ApiResponse<List<DoctorResponseDto>>> getAllDoctors() {
-		List<DoctorResponseDto> doctors = doctorService.getAllDoctors();
+	public ResponseEntity<ApiResponse<List<DoctorResponseDto>>> getAllDoctorsByHospitalId(
+		@PathVariable("hospital_id") Long hospitalId) {
+		List<DoctorResponseDto> doctors = doctorService.getAllDoctorsByHospitalId(hospitalId);
 		ApiResponse<List<DoctorResponseDto>> response = ApiResponse.<List<DoctorResponseDto>>builder()
 			.status(ApiResponse.SUCCESS_STATUS)
-			.message("모든 의사가 성공적으로 검색되었습니다")
+			.message("해당 병원의 모든 의사가 성공적으로 검색되었습니다.")
 			.data(doctors)
 			.build();
 		return ResponseEntity.ok(response);
