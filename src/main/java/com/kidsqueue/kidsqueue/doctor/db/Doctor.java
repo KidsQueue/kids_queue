@@ -1,29 +1,27 @@
 package com.kidsqueue.kidsqueue.doctor.db;
 
+import com.kidsqueue.kidsqueue.common.BaseEntity;
 import com.kidsqueue.kidsqueue.hospital.db.Hospital;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
-@Entity(name = "doctor")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Doctor {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@Entity
+@Table(name = "doctor")
+public class Doctor extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
     private String profileImageUrl;
     private String description;
-    private LocalDateTime createdBy;
-    private LocalDateTime updatedBy;
+
     @Column(columnDefinition = "tinyInt")
     private Integer isActive;
 

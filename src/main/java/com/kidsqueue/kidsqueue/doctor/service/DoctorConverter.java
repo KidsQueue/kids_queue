@@ -1,15 +1,16 @@
 package com.kidsqueue.kidsqueue.doctor.service;
 
 import com.kidsqueue.kidsqueue.doctor.db.Doctor;
-import com.kidsqueue.kidsqueue.doctor.model.DoctorDto;
+import com.kidsqueue.kidsqueue.doctor.model.DoctorResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DoctorConverter {
 
-    public DoctorDto toDto(Doctor doctor) {
+    public DoctorResponseDto toDto(Doctor doctor) {
 
-        return DoctorDto.builder().id(doctor.getId())
+        return DoctorResponseDto.builder()
+                .id(doctor.getId())
                 .name(doctor.getName())
                 .profileImageUrl(doctor.getProfileImageUrl())
                 .description(doctor.getDescription())

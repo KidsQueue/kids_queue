@@ -11,16 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DoctorDto {
+public class DoctorResponseDto { //의사 생성 완료 시 데이터
 
     private Long id;
+    private Long hospitalId;
     private String name;
     private String profileImageUrl;
     private String description;
     private LocalDateTime createdBy;
     private LocalDateTime updatedBy;
     private Integer isActive;
-
-    private Long hospitalId;
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class HospitalDto {
+
     private Long id;
     private String name;
     private String address;
