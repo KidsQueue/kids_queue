@@ -45,5 +45,4 @@ public class Hospital extends BaseEntity {
     @OneToMany(mappedBy = "hospital")
     private List<ClinicHour> clinicHour;
 
-
 }
