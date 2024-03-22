@@ -41,7 +41,7 @@ public class DoctorService {
 			Doctor updatedDoctor = doctorRepository.save(doctor);
 			return doctorConverter.toDto(updatedDoctor); // 이때 updatedBy 필드 업데이트 됨
 		} else {
-			throw new IllegalArgumentException("Doctor not found with id: " + id); //의사 존재하지 않는 경우 예외 발생
+			throw new IllegalArgumentException("id 가" + id + "인 의사를 찾을 수 없습니다"); //의사 존재하지 않는 경우 예외 발생
 		}
 	}
 
@@ -52,7 +52,7 @@ public class DoctorService {
 			Doctor doctor = optionalDoctor.get();
 			return doctorConverter.toDto(doctor);
 		} else {
-			throw new IllegalArgumentException("Doctor not found with id: " + id);
+			throw new IllegalArgumentException("id 가" + id + "인 의사를 찾을 수 없습니다");
 		}
 	}
 

@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Entity
-@Table(name = "store_menu")
+@Table(name = "hospital")
 public class Hospital extends BaseEntity {
 
     private String name;
