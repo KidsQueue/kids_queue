@@ -28,4 +28,5 @@ public class Doctor extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
+
 }
