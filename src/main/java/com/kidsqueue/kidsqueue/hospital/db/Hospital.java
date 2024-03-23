@@ -1,6 +1,7 @@
 package com.kidsqueue.kidsqueue.hospital.db;
 
 import com.kidsqueue.kidsqueue.doctor.db.Doctor;
+import com.kidsqueue.kidsqueue.favor.entity.FavorEntity;
 import com.kidsqueue.kidsqueue.hospital.db.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,40 +19,43 @@ import java.util.List;
 @Builder
 public class Hospital {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String address;
-    private String description;
-    private String phoneNumber;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private String address;
+	private String description;
+	private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'closed'" )
-    private Status status;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'closed'")
+	private Status status;
 
-    @Column(columnDefinition = "tinyInt")
-    private Integer maxNumOfPeople;
-    private LocalDateTime createdBy;
-    private LocalDateTime updatedBy;
-    @Column(columnDefinition = "tinyInt")
-    private Integer isActive;
+	@Column(columnDefinition = "tinyInt")
+	private Integer maxNumOfPeople;
+	private LocalDateTime createdBy;
+	private LocalDateTime updatedBy;
+	@Column(columnDefinition = "tinyInt")
+	private Integer isActive;
 
-    @OneToMany(mappedBy = "hospital")
-    private List<Doctor> doctorList;
+	@OneToMany(mappedBy = "hospital")
+	private List<Doctor> doctorList;
 
-    @OneToMany(mappedBy = "hospital")
-    private List<ClinicHour> clinicHour;
+	@OneToMany(mappedBy = "hospital")
+	private List<ClinicHour> clinicHour;
 
-    @PrePersist // DB에 INSERT 되기 직전에 실행
-    public void createDate() {
-        this.createdBy = LocalDateTime.now();
-    }
+	@OneToMany(mappedBy = "hospital")
+	private List<FavorEntity> favorEntityList;
 
-    @PreUpdate // DB에 UPDATE 되기 직전에 실행
-    public void updateDate() {
-        this.updatedBy = LocalDateTime.now();
-    }
+	@PrePersist // DB에 INSERT 되기 직전에 실행
+	public void createDate() {
+		this.createdBy = LocalDateTime.now();
+	}
+
+	@PreUpdate // DB에 UPDATE 되기 직전에 실행
+	public void updateDate() {
+		this.updatedBy = LocalDateTime.now();
+	}
 
 
 }
