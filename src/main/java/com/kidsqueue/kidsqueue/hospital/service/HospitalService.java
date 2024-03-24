@@ -2,8 +2,6 @@ package com.kidsqueue.kidsqueue.hospital.service;
 
 import com.kidsqueue.kidsqueue.common.ApiResponse;
 import com.kidsqueue.kidsqueue.common.Pagination;
-import com.kidsqueue.kidsqueue.doctor.model.DoctorDto;
-import com.kidsqueue.kidsqueue.hospital.db.ClinicHourRepository;
 import com.kidsqueue.kidsqueue.hospital.db.Hospital;
 import com.kidsqueue.kidsqueue.hospital.db.HospitalRepository;
 import com.kidsqueue.kidsqueue.hospital.db.enums.Status;
