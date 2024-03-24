@@ -9,27 +9,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class HospitalConverter {
 
-    public HospitalDto toDto(Hospital hospital) {
+	public HospitalDto toDto(Hospital hospital) {
 
-        return HospitalDto.builder()
-            .id(hospital.getId())
-            .name(hospital.getName())
-            .address(hospital.getAddress())
-            .description(hospital.getDescription())
-            .phoneNumber(hospital.getPhoneNumber())
-            .status(hospital.getStatus().name())
-            .maxNumOfPeople(hospital.getMaxNumOfPeople())
-            .createdBy(hospital.getCreatedBy())
-            .updatedBy(hospital.getUpdatedBy())
-            .isActive(hospital.getIsActive())
-            .build();
+		return HospitalDto.builder()
+			.id(hospital.getId())
+			.name(hospital.getName())
+			.address(hospital.getAddress())
+			.description(hospital.getDescription())
+			.phoneNumber(hospital.getPhoneNumber())
+			.status(hospital.getStatus().name())
+			.maxNumOfPeople(hospital.getMaxNumOfPeople())
+			.createdBy(hospital.getCreatedBy())
+			.updatedBy(hospital.getUpdatedBy())
+			.isActive(hospital.getIsActive())
+			.build();
 
-    }
+	}
 
-    public Hospital toEntity(HospitalDto hospitalDto) {
-        Hospital hospital = new Hospital();
-        BeanUtils.copyProperties(hospitalDto, hospital);
-        hospital.setStatus(Status.valueOf(hospitalDto.getStatus()));
-        return hospital;
-    }
+	public Hospital toEntity(HospitalDto hospitalDto) {
+		Hospital hospital = new Hospital();
+		BeanUtils.copyProperties(hospitalDto, hospital);
+		hospital.setStatus(Status.valueOf(hospitalDto.getStatus()));
+		return hospital;
+	}
 }
