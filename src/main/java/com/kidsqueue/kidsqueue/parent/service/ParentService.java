@@ -21,15 +21,13 @@ public class ParentService {
 
     public Parent findById(Long id) {
 
-        // id와 일치하는 병원 가져오기
+        // id와 일치하는 회원 가져오기
         Optional<Parent> optionalParent = parentRepository.findById(id);
 
-        // 1d와 일치하는 병원 없으면 ApiException 예외 발생 -> ApiExceptionHandler 가 처리 후 응답 해줌
         if (optionalParent.isEmpty()) {
-            throw new ApiException("해당 id와 일치하는 병원이 없습니다.", HttpStatus.NOT_FOUND);
+            throw new ApiException("해당 id와 일치하는 회원이 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        // 일치하는 병우너 있으면 리턴
         return optionalParent.get();
     }
 

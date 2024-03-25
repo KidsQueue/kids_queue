@@ -21,7 +21,7 @@ public class ParentController {
     private final ParentService parentService;
 
     @GetMapping("/info/{user_id}")
-    public ResponseEntity<Api<ParentDto>> getHospitalById(@PathVariable Long id) {
+    public ResponseEntity<Api<ParentDto>> getParentById(@PathVariable Long id) {
         Api<ParentDto> apiResponse = parentService.findParentById(id);
 
         if (apiResponse.getData() != null) {
