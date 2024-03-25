@@ -47,6 +47,7 @@ public class Parent {
 
     private String role;
 
+
     @OneToMany(mappedBy = "parent")
     private List<FavorEntity> favorEntityList;
 
