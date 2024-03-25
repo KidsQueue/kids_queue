@@ -25,6 +25,5 @@ spring:
     user:
       name: test
       password: 1234
-
   jwt:
     secret: ${secret}

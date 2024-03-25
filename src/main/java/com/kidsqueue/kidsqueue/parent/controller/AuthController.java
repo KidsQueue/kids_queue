@@ -1,6 +1,6 @@
 package com.kidsqueue.kidsqueue.parent.controller;
 
-import com.kidsqueue.kidsqueue.common.ApiResponse;
+import com.kidsqueue.kidsqueue.common.Api;
 import com.kidsqueue.kidsqueue.parent.db.Parent;
 import com.kidsqueue.kidsqueue.parent.model.SignupDto;
 import com.kidsqueue.kidsqueue.parent.service.AuthService;
@@ -26,9 +26,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<String>> signup(@Valid SignupDto signupDto,
+    public ResponseEntity<Api<String>> signup(@Valid SignupDto signupDto,
         BindingResult bindingResult) {
-        ApiResponse<String> response;
+        Api<String> response;
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
@@ -37,8 +37,8 @@ public class AuthController {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
 
-            response = ApiResponse.<String>builder()
-                .status(ApiResponse.FAIL_STATUS)
+            response = Api.<String>builder()
+                .status(Api.FAIL_STATUS)
                 .message("유효성 검사 실패")
                 .data(errorMap.toString())
                 .build();
@@ -48,8 +48,8 @@ public class AuthController {
             Parent parent = signupDto.toEntity();
             Parent parentEntity = authService.signUp(parent);
 
-            response = ApiResponse.<String>builder()
-                .status(ApiResponse.SUCCESS_STATUS)
+            response = Api.<String>builder()
+                .status(Api.SUCCESS_STATUS)
                 .message("회원가입 성공")
                 .data("ID: " + parentEntity.getId())
                 .build();
