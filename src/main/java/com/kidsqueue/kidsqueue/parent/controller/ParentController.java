@@ -20,7 +20,7 @@ public class ParentController {
 
     private final ParentService parentService;
 
-    @GetMapping("/info/{user_id}")
+    @GetMapping("/info/{id}")
     public ResponseEntity<Api<ParentDto>> getParentById(@PathVariable Long id) {
         Api<ParentDto> apiResponse = parentService.findParentById(id);
 
@@ -35,7 +35,7 @@ public class ParentController {
         }
     }
 
-    @PatchMapping("/info/{user_id}")
+    @PatchMapping("/info/{id}")
     public ResponseEntity<Api<ParentDto>> updateParent(@PathVariable Long id,
         @RequestBody ParentDto parentDto) {
         Api<ParentDto> apiResponse = parentService.updateParent(id, parentDto);
@@ -50,4 +50,5 @@ public class ParentController {
             return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
 }

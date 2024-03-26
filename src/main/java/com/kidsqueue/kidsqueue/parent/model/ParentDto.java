@@ -23,6 +23,7 @@ public class ParentDto {
     private String residentRegistrationNumber;
     private String profileImageUrl;
     private String role;
+    private String email;
 
     private LocalDateTime createdBy;
     private LocalDateTime updatedBy;

@@ -44,6 +44,7 @@ public class Parent {
     @Column(length = 13)
     private String residentRegistrationNumber;
     private String profileImageUrl;
+    private String email;
 
     private String role;
 
