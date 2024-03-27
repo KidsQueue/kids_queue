@@ -26,4 +26,11 @@ public class EmailController {
         emailService.sendUserIdByEmail(name, email);
         return ResponseEntity.ok(Api.ok(null, "아이디를 이메일로 전송했습니다."));
     }
+
+    @PostMapping("/findPassword")
+    public ResponseEntity<Api<String>> resetPassword(@RequestParam String loginId,
+        @RequestParam String email) {
+        emailService.resetPassword(loginId, email);
+        return ResponseEntity.ok(Api.ok(null, "임시 비밀번호를 이메일로 전송했습니다."));
+    }
 }
