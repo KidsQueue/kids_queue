@@ -44,6 +44,8 @@ jobs:
           spring.jwt.secret: ${{secrets.JWT_KEY}}
           spring.mail.username: ${{secrets.MAIL_USERNAME}}
           spring.mail.PASSWORD: ${{secrets.MAIL_PASSWORD}}
+          spring.security.auth2.client.registration.naver.client-id: ${{secrets.OAUTH2_NAVER_CLIENT_ID}}
+          spring.security.auth2.client.registration.naver.client-secret: ${{secrets.OAUTH2_NAVER_CLIENT_SECRET}}
 
 
 
