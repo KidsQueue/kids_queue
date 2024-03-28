@@ -21,6 +21,8 @@ public class SignupDto {
     private String gender;
     @NotBlank
     private String residentRegistrationNumber;
+    @NotBlank
+    private String email;
 
     public Parent toEntity() {
         return Parent.builder()
@@ -31,6 +33,7 @@ public class SignupDto {
             .age(age)
             .gender(gender)
             .residentRegistrationNumber(residentRegistrationNumber)
+            .email(email)
             .build();
     }
 }
